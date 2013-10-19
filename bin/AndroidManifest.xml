@@ -30,6 +30,11 @@
             android:name="com.example.sandvich.Drive"
             android:label="@string/title_activity_drive" >
         </activity>
+        <activity
+            android:name="com.example.sandvich.Settings"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
-
+	
+	<uses-permission android:name="android.permission.INTERNET"></uses-permission>
 </manifest>

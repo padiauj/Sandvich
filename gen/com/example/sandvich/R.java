@@ -24,14 +24,19 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_settings=0x7f08000f;
+        public static final int action_settings=0x7f080014;
         public static final int breadGroup=0x7f080004;
         public static final int control_area=0x7f080000;
         public static final int deliverFoodButton=0x7f080002;
+        public static final int ipAddressText=0x7f08000f;
+        public static final int ipAddressTextField=0x7f080010;
         public static final int lettuceButton=0x7f08000c;
         public static final int makeSandwichButton=0x7f080001;
+        public static final int portText=0x7f080011;
+        public static final int portTextField=0x7f080012;
         public static final int roastBeefButton=0x7f080009;
         public static final int ryeButton=0x7f080007;
+        public static final int settingsUpdateButton=0x7f080013;
         public static final int submitButton=0x7f08000e;
         public static final int textView1=0x7f080003;
         public static final int textView2=0x7f080008;
@@ -45,11 +50,13 @@ public final class R {
         public static final int activity_drive=0x7f030000;
         public static final int activity_main=0x7f030001;
         public static final int activity_make_sandwich=0x7f030002;
+        public static final int activity_settings=0x7f030003;
     }
     public static final class menu {
         public static final int drive=0x7f070000;
         public static final int main=0x7f070001;
         public static final int make_sandwich=0x7f070002;
+        public static final int settings=0x7f070003;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
@@ -58,6 +65,7 @@ public final class R {
         public static final int title_activity_connection_settings=0x7f050005;
         public static final int title_activity_drive=0x7f050004;
         public static final int title_activity_make_sandwich=0x7f050003;
+        public static final int title_activity_settings=0x7f050006;
     }
     public static final class style {
         /** 

@@ -45,17 +45,14 @@ public class Client {
                 InetAddress serverAddr = InetAddress.getByName(serverIpAddress);
                 Log.d("ClientActivity", "C: Connecting...");
                 Socket socket = new Socket(serverAddr, myPort);
-                connected = true;
-                while (connected) {
-                    try {
-                        Log.d("ClientActivity", "C: Sending command.");
-                        PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket
-                                    .getOutputStream())), true);
-                            out.println(this.command);
-                            Log.d("ClientActivity", "C: Sent: " + command);
-                    } catch (Exception e) {
-                        Log.e("ClientActivity", "S: Error", e);
-                    }
+                try {
+                    Log.d("ClientActivity", "C: Sending command.");
+                    PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket
+                                .getOutputStream())), true);
+                        out.println(this.command);
+                        Log.d("ClientActivity", "C: Sent: " + command);
+                } catch (Exception e) {
+                    Log.e("ClientActivity", "S: Error", e);
                 }
                 socket.close();
                 Log.d("ClientActivity", "C: Closed.");

@@ -7,5 +7,6 @@
     <string name="title_activity_make_sandwich">MakeSandwich</string>
     <string name="title_activity_drive">Drive</string>
     <string name="title_activity_connection_settings">ConnectionSettings</string>
+    <string name="title_activity_settings">Settings</string>
 
 </resources>
