@@ -26,7 +26,6 @@ public final class R {
     public static final class id {
         public static final int action_settings=0x7f080014;
         public static final int breadGroup=0x7f080004;
-        public static final int control_area=0x7f080000;
         public static final int deliverFoodButton=0x7f080002;
         public static final int ipAddressText=0x7f08000f;
         public static final int ipAddressTextField=0x7f080010;
@@ -36,6 +35,7 @@ public final class R {
         public static final int portTextField=0x7f080012;
         public static final int roastBeefButton=0x7f080009;
         public static final int ryeButton=0x7f080007;
+        public static final int scroller=0x7f080000;
         public static final int settingsUpdateButton=0x7f080013;
         public static final int submitButton=0x7f08000e;
         public static final int textView1=0x7f080003;
