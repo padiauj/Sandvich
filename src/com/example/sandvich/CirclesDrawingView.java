@@ -1,5 +1,6 @@
 package com.example.sandvich;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -9,12 +10,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 
 public class CirclesDrawingView extends View {
 
@@ -45,12 +49,24 @@ public class CirclesDrawingView extends View {
 
     /** Paint to draw circles */
     private Paint mCirclePaint;
+    
+    private Paint mRectPaintLeft;
+    
+    private Paint mRectPaintRight;
+    
+    private String previousLeftSpeed = "";
+    
+    private String previousRightSpeed = "";
 
     private final Random mRadiusGenerator = new Random();
     // Radius limit in pixels
     private final static int RADIUS_LIMIT = 100;
 
-    private static final int CIRCLES_LIMIT = 3;
+    private static final int CIRCLES_LIMIT = 2;
+    
+    private static float SCREEN_WIDTH;
+    
+    private static float SCREEN_HEIGHT;
 
     /** All available circles */
     private HashSet<CircleArea> mCircles = new HashSet<CircleArea>(CIRCLES_LIMIT);
@@ -88,16 +104,45 @@ public class CirclesDrawingView extends View {
         mCirclePaint.setColor(Color.BLUE);
         mCirclePaint.setStrokeWidth(40);
         mCirclePaint.setStyle(Paint.Style.FILL);
+        
+        
+        mRectPaintLeft = new Paint();
+        mRectPaintLeft.setColor(Color.GREEN);
+        mRectPaintLeft.setStrokeWidth(40);
+        mRectPaintLeft.setStyle(Paint.Style.FILL);
+        
+        
+        mRectPaintRight = new Paint();
+        mRectPaintRight.setColor(Color.RED);
+        mRectPaintRight.setStrokeWidth(40);
+        mRectPaintRight.setStyle(Paint.Style.FILL);
+        
+        WindowManager wm = (WindowManager) ct.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        SCREEN_WIDTH = size.x;
+        SCREEN_HEIGHT = size.y;
+        
+       CircleArea leftCircle = new CircleArea((int) (SCREEN_WIDTH / 4), (int) (SCREEN_HEIGHT / 2), RADIUS_LIMIT);
+       CircleArea rightCircle = new CircleArea((int) (3 * SCREEN_WIDTH / 4), (int) (SCREEN_HEIGHT / 2), RADIUS_LIMIT);
+       mCircles.add(leftCircle);
+       mCircles.add(rightCircle);
     }
 
     @Override
     public void onDraw(final Canvas canv) {
         // background bitmap to cover all area
         // canv.drawBitmap(mBitmap, null, mMeasuredRect, null);
-
+        canv.drawRect((SCREEN_WIDTH / 4) - 120, 0, (SCREEN_WIDTH / 4) + 120, SCREEN_HEIGHT, mRectPaintLeft);
+        canv.drawRect((3 * SCREEN_WIDTH / 4) - 120, 0, (3 * SCREEN_WIDTH / 4) + 120, SCREEN_HEIGHT, mRectPaintRight);
+        
         for (CircleArea circle : mCircles) {
             canv.drawCircle(circle.centerX, circle.centerY, circle.radius, mCirclePaint);
         }
+        
+        updateSpeed();
+
     }
 
     @Override
@@ -121,9 +166,11 @@ public class CirclesDrawingView extends View {
 
                 // check if we've touched inside some circle
                 touchedCircle = obtainTouchedCircle(xTouch, yTouch);
-                touchedCircle.centerX = xTouch;
-                touchedCircle.centerY = yTouch;
-                mCirclePointer.put(event.getPointerId(0), touchedCircle);
+                if(touchedCircle != null) {
+	                //touchedCircle.centerX = xTouch;
+	                touchedCircle.centerY = yTouch;
+	                mCirclePointer.put(event.getPointerId(0), touchedCircle);
+                }
 
                 invalidate();
                 handled = true;
@@ -139,10 +186,12 @@ public class CirclesDrawingView extends View {
 
                 // check if we've touched inside some circle
                 touchedCircle = obtainTouchedCircle(xTouch, yTouch);
-
-                mCirclePointer.put(pointerId, touchedCircle);
-                touchedCircle.centerX = xTouch;
-                touchedCircle.centerY = yTouch;
+                
+                if (touchedCircle != null) {
+	                mCirclePointer.put(pointerId, touchedCircle);
+	                //touchedCircle.centerX = xTouch;
+	                touchedCircle.centerY = yTouch;
+                }
                 invalidate();
                 handled = true;
                 break;
@@ -162,7 +211,7 @@ public class CirclesDrawingView extends View {
                     touchedCircle = mCirclePointer.get(pointerId);
 
                     if (null != touchedCircle) {
-                        touchedCircle.centerX = xTouch;
+                        //touchedCircle.centerX = xTouch;
                         touchedCircle.centerY = yTouch;
                     }
                 }
@@ -217,8 +266,9 @@ public class CirclesDrawingView extends View {
     private CircleArea obtainTouchedCircle(final int xTouch, final int yTouch) {
         CircleArea touchedCircle = getTouchedCircle(xTouch, yTouch);
 
+        /*
         if (null == touchedCircle) {
-            touchedCircle = new CircleArea(xTouch, yTouch, mRadiusGenerator.nextInt(RADIUS_LIMIT) + RADIUS_LIMIT);
+            touchedCircle = new CircleArea(xTouch, yTouch, RADIUS_LIMIT);
 
             if (mCircles.size() == CIRCLES_LIMIT) {
                 Log.w(TAG, "Clear all circles, size is " + mCircles.size());
@@ -229,6 +279,7 @@ public class CirclesDrawingView extends View {
             Log.w(TAG, "Added circle " + touchedCircle);
             mCircles.add(touchedCircle);
         }
+        */
 
         return touchedCircle;
     }
@@ -259,5 +310,58 @@ public class CirclesDrawingView extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         mMeasuredRect = new Rect(0, 0, getMeasuredWidth(), getMeasuredHeight());
+    }
+    
+    private void updateSpeed() {
+    	CircleArea[] circles = mCircles.toArray(new CircleArea[mCircles.size()]);
+    	String leftSpeed = circlePosToBits(circles[0].centerY);
+    	String rightSpeed = circlePosToBits(circles[1].centerY);
+    	boolean sendData = false;
+    	
+		if (!leftSpeed.equals(previousLeftSpeed)) {
+			sendData = true;
+			previousLeftSpeed = leftSpeed;
+		}
+		
+		if (!rightSpeed.equals(previousRightSpeed)) {
+			sendData = true;
+			previousRightSpeed = rightSpeed;
+		}
+		
+		if (sendData) {
+			sendSpeedData (leftSpeed, rightSpeed);
+		}
+    }
+    
+    private void sendSpeedData(String leftData, String rightData) {
+    	String data = "1" + leftData + rightData;
+    	Log.v("Speed Update", data);
+		Client client = new Client(MainActivity.ipAddress, Integer.parseInt(MainActivity.port));
+		client.sendCommand(data);
+    }
+    
+    private String circlePosToBits(float posY) {
+    	int convertedPos = (int) (Math.floor(Math.abs( ( posY + (SCREEN_HEIGHT / 7) ) / (SCREEN_HEIGHT / 7))));
+    	
+    	switch (convertedPos) {
+    	case 0:
+    		return "111";
+    	case 1:
+    		return "111";
+    	case 2:
+    		return "110";
+    	case 3:
+    		return "101";
+    	case 4:
+    		return "100";
+    	case 5:
+    		return "011";
+    	case 6:
+    		return "010";
+    	case 7:
+    		return "001";
+    	}
+    	
+    	return "000";
     }
 }
