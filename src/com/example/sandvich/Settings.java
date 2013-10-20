@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,6 +45,7 @@ public class Settings extends Activity {
 					MainActivity.port = (String) portText.getText().toString();
 				} else {
 					// Let user know that port is not set
+					Toast.makeText(getApplicationContext(), "The port was not properly set", Toast.LENGTH_SHORT).show();
 					noErrors = false;
 				}
 				
@@ -52,15 +55,18 @@ public class Settings extends Activity {
 					MainActivity.ipAddress = tempIP;
 				} else {
 					// Tell user invalid ip address
+					Toast.makeText(getApplicationContext(), "Either no IP address was entered or it was invalid", Toast.LENGTH_SHORT).show();
 					noErrors = false;
 				}
 				
 				if (noErrors) {
 					Log.v("Setting", "Port: " + portText.getText());
 					Log.v("Setting", "IP Address: " + ipAddressText.getText());
+					Toast.makeText(getApplicationContext(), "Updated settings", Toast.LENGTH_SHORT).show();
 					finish();
 				} else {
 					// Let user know to change errors
+					Toast.makeText(getApplicationContext(), "Please fix errors before proceeding", Toast.LENGTH_SHORT).show();
 				}
 			}
 		});

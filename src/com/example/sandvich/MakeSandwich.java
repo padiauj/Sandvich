@@ -83,9 +83,11 @@ public class MakeSandwich extends Activity {
 				
 				if (MainActivity.ipAddress.equals("") || MainActivity.port.equals("")) {
 					// Tell user ip and/or port are invalid
+					Toast.makeText(getApplicationContext(), "The network configuration is not properly set", Toast.LENGTH_SHORT).show();
 				} else {
 					Client client = new Client(MainActivity.ipAddress, Integer.parseInt(MainActivity.port));
 					client.sendCommand(dataString);
+					Toast.makeText(getApplicationContext(), "Your order was placed successfully", Toast.LENGTH_SHORT).show();
 				}
 			}
 		});

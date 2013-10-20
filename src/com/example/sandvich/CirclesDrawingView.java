@@ -19,6 +19,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 public class CirclesDrawingView extends View {
 
@@ -48,6 +49,8 @@ public class CirclesDrawingView extends View {
     }
 
     /** Paint to draw circles */
+    private Context context;
+    
     private Paint mCirclePaint;
     
     private Paint mRectPaintLeft;
@@ -98,7 +101,9 @@ public class CirclesDrawingView extends View {
     private void init(final Context ct) {
         // Generate bitmap used for background
         // mBitmap = BitmapFactory.decodeResource(ct.getResources(), R.drawable.up_image);
-
+    	
+    	context = ct;
+    	
         mCirclePaint = new Paint();
 
         mCirclePaint.setColor(Color.BLUE);
@@ -336,8 +341,13 @@ public class CirclesDrawingView extends View {
     private void sendSpeedData(String leftData, String rightData) {
     	String data = "1" + leftData + rightData;
     	Log.v("Speed Update", data);
-		Client client = new Client(MainActivity.ipAddress, Integer.parseInt(MainActivity.port));
-		client.sendCommand(data);
+    	if (MainActivity.ipAddress.equals("") || MainActivity.port.equals("")) {
+			// Tell user ip and/or port are invalid
+			Toast.makeText(context, "The network configuration is not properly set", Toast.LENGTH_SHORT).show();
+    	} else {
+			Client client = new Client(MainActivity.ipAddress, Integer.parseInt(MainActivity.port));
+			client.sendCommand(data);
+    	}
     }
     
     private String circlePosToBits(float posY) {
