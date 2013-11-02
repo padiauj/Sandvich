@@ -339,7 +339,7 @@ public class CirclesDrawingView extends View {
     }
     
     private void sendSpeedData(String leftData, String rightData) {
-    	String data = "11" + leftData + rightData;
+    	String data = "D" + leftData + rightData;
     	Log.v("Speed Update", data);
     	if (MainActivity.ipAddress.equals("") || MainActivity.port.equals("")) {
 			// Tell user ip and/or port are invalid

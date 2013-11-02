@@ -34,51 +34,35 @@ public class MakeSandwich extends Activity {
 		submitButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View arg0) {
-				int[] data = new int[8];
-				data[0] = 0;
+				String dataString = "";
+				dataString += "O";
 				if(whiteButton.isChecked()) {
-					data[1] = 0;
-					data[2] = 1;
+					dataString += "2";
+
 				} else if(wheatButton.isChecked()) {
-					data[1] = 1;
-					data[2] = 0;
+					dataString += "1";
+
 				} else if(ryeButton.isChecked()) {
-					data[1] = 1;
-					data[2] = 1;
+					dataString += "3";
 				} else {
 					Log.v("Error", "A type of bread must be picked");
 				}
 					
 				if(roastBeefButton.isChecked())
-					data[3] = 1;
-				else
-					data[3] = 0;
+					dataString += "4";
 				
 				if(veggieBurgerButton.isChecked())
-					data[4] = 1;
-				else
-					data[4] = 0;
+					dataString += "5";
 				
 				if(turkeyButton.isChecked())
-					data[5] = 1;
-				else
-					data[5] = 0;
+					dataString += "6";
 				
 				if(lettuceButton.isChecked())
-					data[6] = 1;
-				else
-					data[6] = 0;
+					dataString += "7";
 				
 				if(tomatoButton.isChecked())
-					data[7] = 1;
-				else
-					data[7] = 0;
-				
-				String dataString = "";
-				for(int value: data) {
-					dataString += value;
-				}
-				
+					dataString += "8";
+
 				Log.v("Data value", dataString);
 				
 				if (MainActivity.ipAddress.equals("") || MainActivity.port.equals("")) {
