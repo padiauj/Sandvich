@@ -64,8 +64,6 @@ void serveIngredient(int c) {
 void loop() {
 
 
-	Serial.println(diskpos);
-incpos();
 	/*
 	if (Serial.available()) {
 		if ((Serial.read()-'0') == 0) {
